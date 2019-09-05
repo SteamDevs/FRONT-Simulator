@@ -6,15 +6,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  title = 'Front';
-  lat = 14.6229;
-  lng = -90.5315;
-
   private data : any [] = [
     { lat : 14.6219495, lng :-90.5178773},
     { lat : 14.6230706, lng : -90.5165898}
   ]
-
+  public origin: any;
+  public destination: any;
   checkMap(  event : any ) : void {
     console.log(event)
   }
@@ -22,6 +19,15 @@ export class HomeComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    this.getDirection();
+  }
+
+  getDirection() {
+    this.origin = { lat : 14.6219495, lng :-90.5178773};
+    this.destination = { lat : 14.6230706, lng : -90.5165898};
+   
+    // this.origin = 'Taipei Main Station';
+    // this.destination = 'Taiwan Presidential Office';
   }
  
 }
