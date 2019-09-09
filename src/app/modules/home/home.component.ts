@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ReporteService } from 'src/app/services/reporte.service';
+import { google } from '@agm/core/services/google-maps-types';
 
 @Component({
   selector: 'app-home',
@@ -15,7 +16,8 @@ export class HomeComponent implements OnInit {
   ]
   public origin: any;
   public destination: any;
-  public waypoints: any;
+  public waypoints: [any];
+  public animation: any;
   checkMap(  event : any ) : void {
     console.log(event)
   }
@@ -43,12 +45,14 @@ export class HomeComponent implements OnInit {
 
   getDirection() {
     this.origin = { lat : this.coordenadas[0].lat, lng :this.coordenadas[0].lng};
-    this.destination = { lat : 14.6230706, lng : -90.5165898};
-    this.waypoints = [
-      {location : {lat : 14.6254314, lng : -90.5381718} },
-      {location : {lat : 14.6212892, lng : -90.5552912} }
-    ]
-   
+    this.destination = { lat: this.coordenadas[20].lat, lng :this.coordenadas[20].lng};    
+        for (var i = 0; i < this.coordenadas.length; i++) {
+            this.waypoints.push([{
+              location: this.coordenadas[i],
+              stopover: true
+            }]);
+          }
+
     // this.origin = 'Taipei Main Station';
     // this.destination = 'Taiwan Presidential Office';
   }
