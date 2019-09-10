@@ -9,17 +9,22 @@ import { AppComponent } from './app.component';
 import { NavComponent } from './modules/nav/nav.component';
 import { FooterComponent } from './modules/footer/footer.component';
 
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+
+const config: SocketIoConfig = { url: 'http://157.230.187.118:3001', options: {}}
+
 @NgModule({
   declarations: [
     AppComponent,
     NavComponent,
-    FooterComponent
+    FooterComponent   
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    SocketIoModule.forRoot(config)
     
   ],
   providers: [],

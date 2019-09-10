@@ -6,12 +6,14 @@ import { HomeRoutingModule } from './home-routing.module';
 import { HomeComponent } from './home.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { DevicesComponent } from '../devices/devices.component';
 import { AgmDirectionModule } from 'agm-direction';   // agm-direction
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+
+const config: SocketIoConfig = { url: 'http://157.230.187.118:3001', options: {}}
 
 
 @NgModule({
-  declarations: [HomeComponent, DevicesComponent],
+  declarations: [HomeComponent],
   imports: [
     CommonModule,
     HomeRoutingModule,
@@ -20,7 +22,8 @@ import { AgmDirectionModule } from 'agm-direction';   // agm-direction
        }),
        HttpClientModule,
        FormsModule,
-       AgmDirectionModule
+       AgmDirectionModule,
+       SocketIoModule.forRoot(config)
   ]
 })
 export class HomeModule { }

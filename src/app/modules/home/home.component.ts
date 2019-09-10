@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostBinding } from '@angular/core';
 import { ReporteService } from 'src/app/services/reporte.service';
 import { google } from '@agm/core/services/google-maps-types';
+import { SocketioService } from 'src/app/services/socketio.service';
 
 @Component({
   selector: 'app-home',
@@ -10,22 +11,30 @@ import { google } from '@agm/core/services/google-maps-types';
 })
 export class HomeComponent implements OnInit {
   public coordenadas;
+  public origin: any;
+  public destination: any;
+  public animation: any;
+
+  //arraycoords
+  public positions : any;
+  
+  //array
+  public waypoints = [];
   private data : any [] = [
     { lat : 14.6219495, lng :-90.5178773},
     { lat : 14.6230706, lng : -90.5165898}
   ]
-  public origin: any;
-  public destination: any;
-  public waypoints: [any];
-  public animation: any;
-  checkMap(  event : any ) : void {
-    console.log(event)
-  }
+  
+  constructor(
+    private _reporteService: ReporteService,
+    private _socketervice : SocketioService
+    ) { }
 
-  constructor(private _reporteService: ReporteService) { }
+  @HostBinding('class.getCords')
 
   ngOnInit() {
     this.getCordenadas()
+    this.observeSocket()
   }
 
   getCordenadas(){
@@ -42,19 +51,23 @@ export class HomeComponent implements OnInit {
     )
   }
 
-
-  getDirection() {
+  getCords() {
     this.origin = { lat : this.coordenadas[0].lat, lng :this.coordenadas[0].lng};
-    this.destination = { lat: this.coordenadas[20].lat, lng :this.coordenadas[20].lng};    
-        for (var i = 0; i < this.coordenadas.length; i++) {
-            this.waypoints.push([{
-              location: this.coordenadas[i],
-              stopover: true
-            }]);
-          }
+    this.destination = { lat: this.coordenadas[length -1].lat, lng :this.coordenadas[length -1].lng};    
+      for (var i = 0; i < this.coordenadas.length; i++) {
+        this.waypoints.push({
+          location: {lat: this.coordenadas[i].lat, lng: this.coordenadas[i].lng},
+        });
+      }
+    console.log(this.waypoints)
+  }
 
-    // this.origin = 'Taipei Main Station';
-    // this.destination = 'Taiwan Presidential Office';
+  observeSocket(){
+    this._socketervice.listenn('gps-coords').subscribe( 
+      data =>{
+        this.positions = data
+        console.log(data)
+    })
   }
  
 }
