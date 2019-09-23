@@ -1,3 +1,19 @@
-<p>
-  onboarding works!
-</p>
+<div class="con">
+  <div class="card">
+    <div class="card-body">
+      <h4 class="card-title">Corroboración de datos.</h4>
+      <p class="card-text">
+        <agm-map  [latitude]="14.5992923" [longitude]="-90.5243853" [zoom]="16">
+          <!-- <agm-marker [latitude]="point.lat" [longitude]="point.lng" *ngIf="point"></agm-marker> -->
+        </agm-map>
+      </p>
+      <div class="form-check">
+        <label class="form-check-label">
+          ¿Están correctas las direcciones mostradas?
+        </label>
+      </div>
+      <a [routerLink]="['/home']" class="btn btn-info">Finalizar la configuración</a>
+      <a [routerLink]="['/registerMorning']" class="btn btn-danger">Volver a configurar las direcciones</a>
+    </div>
+  </div>
+</div>

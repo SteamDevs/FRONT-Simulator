@@ -1,20 +1,5 @@
 <div class="con">
-  <div class="card">
-    <div class="card-body">
-      <h4 class="card-title">Your location</h4>
-      <div class="form-group">
-        <label>Enter address</label>
-        <input type="text" class="form-control" (keydown.enter)="$event.preventDefault()"
-          placeholder="Search Nearest Location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text"
-          #search>
-      </div>
-      <p class="card-text">
-        <agm-map (mapClick)="addLocation($event)" [latitude]="latitude" [longitude]="longitude" [zoom]="16"
-          (change)="$event.preventDefault()">
-          <agm-marker [markerDraggable]="true" (dragEnd)="lastPositionStop($event)" [latitude]="point.lat" [longitude]="point.lng" *ngIf="point">
-          </agm-marker>
-        </agm-map>
-      </p>
-    </div>
-  </div>
+  <div class="loader loader--1"></div>
+  <div class="loader loader--2"></div>
+  <div class="loader loader--3"></div>
 </div>
