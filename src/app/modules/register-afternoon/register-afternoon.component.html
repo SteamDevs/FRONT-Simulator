@@ -1,0 +1,23 @@
+<div class="con">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">P.M.</h4>
+        <div class="form-group">
+          <label>Por favor ingrese su dirección en el buscador y ponga un pin donde quiera poner una parada de retorno del
+            colegio.</label>
+          <input type="text" class="form-control" (keydown.enter)="$event.preventDefault()"
+            placeholder="Ingrese su dirección" placement="top" ngbTooltip="Tooltip on top" autocorrect="off"
+            autocapitalize="off" spellcheck="off" type="text" #search>
+        </div>
+        <p class="card-text">
+          <agm-map (mapClick)="addLocation($event)" [latitude]="latitude" [longitude]="longitude" [zoom]="16"
+            (change)="$event.preventDefault()">
+            <agm-marker [markerDraggable]="true" (dragEnd)="lastPositionStop($event)" [latitude]="point.lat"
+              [longitude]="point.lng" *ngIf="point">
+            </agm-marker>
+          </agm-map>
+        </p>
+        <a class="btn btn-warning" [routerLink]="['/onboarding']">Terminar la configuración</a>
+      </div>
+    </div>
+  </div>

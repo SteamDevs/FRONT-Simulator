@@ -1,0 +1,34 @@
+<div class="con">
+  <div class="card">
+    <div class="card-body">
+      <h4 class="card-title">A.M</h4>
+      <div class="form-group">
+          <label>Por favor ingrese el código de su Hijo/a.</label>
+          <input type="text" class="form-control" placeholder="Ingrese el codigo" autocorrect="off" autocapitalize="off"
+            spellcheck="off" type="text">
+        <label>Por favor ingrese su dirección en el buscador y ponga un pin donde quiera poner una parada de ida al
+          colegio.</label>
+        <input type="text" class="form-control" (keydown.enter)="$event.preventDefault()"
+          placeholder="Ingrese su dirección" placement="top" ngbTooltip="Tooltip on top" autocorrect="off"
+          autocapitalize="off" spellcheck="off" type="text" #search>
+      </div>
+      <p class="card-text">
+        <agm-map (mapClick)="addLocation($event)" [latitude]="latitude" [longitude]="longitude" [zoom]="16"
+          (change)="$event.preventDefault()">
+          <agm-marker [markerDraggable]="true" (dragEnd)="lastPositionStop($event)" [latitude]="point.lat"
+            [longitude]="point.lng" *ngIf="point">
+          </agm-marker>
+        </agm-map>
+      </p>
+      <div class="form-check">
+        <label class="form-check-label">
+          <input class="form-check-input" type="checkbox" value="true" (click)="simon()">
+          ¿Desea que esta ubicación sea la misma para el retorno?
+          <span class="form-check-sign"></span>
+        </label>
+      </div>
+      <a *ngIf="!simonpedro" [routerLink]="['/registerAfternoon']" class="btn btn-info">Configurar la hora de retorno</a>
+      <a *ngIf="simonpedro" [routerLink]="['/onboarding']" class="btn btn-warning">Terminar la configuración</a>
+    </div>
+  </div>
+</div>

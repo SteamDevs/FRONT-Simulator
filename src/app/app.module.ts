@@ -1,14 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { FormsModule } from "@angular/forms";
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
-
+import { NgModule } from '@angular/core';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavComponent } from './modules/nav/nav.component';
-import { FooterComponent } from './modules/footer/footer.component';
-
+import { AgmCoreModule } from '@agm/core';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 
 const config: SocketIoConfig = { url: 'http://157.230.187.118:3001', options: {}}
@@ -16,16 +15,15 @@ const config: SocketIoConfig = { url: 'http://157.230.187.118:3001', options: {}
 @NgModule({
   declarations: [
     AppComponent,
-    NavComponent,
-    FooterComponent   
+    NavComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule,
     FormsModule,
+    HttpClientModule,
+    NgbModule,
     SocketIoModule.forRoot(config)
-    
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,73 +1,91 @@
-import { Component, OnInit, HostBinding } from '@angular/core';
-import { ReporteService } from 'src/app/services/reporte.service';
-import { google } from '@agm/core/services/google-maps-types';
-import { SocketioService } from 'src/app/services/socketio.service';
+import { Component, OnInit, NgZone, ViewChild, ElementRef } from '@angular/core';
+import { MapsAPILoader,MouseEvent } from '@agm/core';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
-  providers: [ReporteService]
+  styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  public coordenadas;
-  public origin: any;
-  public destination: any;
-  public animation: any;
 
-  //arraycoords
-  public positions : any;
+  latitude: Number;
+  longitude: Number;
+  zoom: Number;
+  address: String;
+  private geoCoder;
+
+  @ViewChild('search')
+  public searchElementRef: ElementRef;
   
-  //array
-  public waypoints = [];
-  private data : any [] = [
-    { lat : 14.6219495, lng :-90.5178773},
-    { lat : 14.6230706, lng : -90.5165898}
-  ]
-  
+  private locationsInMap : any[] = []
+  public point: any;
+
   constructor(
-    private _reporteService: ReporteService,
-    private _socketervice : SocketioService
-    ) { }
-
-  @HostBinding('class.getCords')
+    private _mapsAPILoader: MapsAPILoader,
+    private _ngZone: NgZone
+  ) { }
 
   ngOnInit() {
-    this.getCordenadas()
-    this.observeSocket()
+    this.Center()
   }
 
-  getCordenadas(){
-    this._reporteService.getCorLaction().subscribe(
-      response =>{
-        if (response.data) {
-          console.log(response.data);
-          this.coordenadas = response.data;
-        }
-      },
-      error =>{
-        console.log(error)
+  public Center(){
+    //load Places Autocomplete
+    this._mapsAPILoader.load().then(() => {
+      this.setCurrentLocation();
+      this.geoCoder = new google.maps.Geocoder;
+      
+      var options = {
+        componentRestrictions : { country : "gt" }
       }
-    )
-  }
 
-  getCords() {
-    this.origin = { lat : this.coordenadas[0].lat, lng :this.coordenadas[0].lng};
-    this.destination = { lat: this.coordenadas[length -1].lat, lng :this.coordenadas[length -1].lng};    
-      for (var i = 0; i < this.coordenadas.length; i++) {
-        this.waypoints.push({
-          location: {lat: this.coordenadas[i].lat, lng: this.coordenadas[i].lng},
+
+      let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, options );
+
+    
+      autocomplete.addListener("place_changed", () => {
+        this._ngZone.run(() => {
+          //get the place result
+          let place: google.maps.places.PlaceResult = autocomplete.getPlace();
+  
+          //verify result
+          if (!place.geometry || place.geometry === undefined || place.geometry === null) {
+            return; 
+          }
+  
+          //set latitude, longitude and zoom
+          this.latitude = place.geometry.location.lat();
+          this.longitude = place.geometry.location.lng();
+          this.zoom = 12;
         });
-      }
-    console.log(this.waypoints)
+      });
+    });
   }
 
-  observeSocket(){
-    this._socketervice.listenn('gps-coords').subscribe( 
-      data =>{
-        this.positions = data
-        console.log(data)
-    })
+  private setCurrentLocation() {
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        this.latitude = position.coords.latitude;
+        this.longitude = position.coords.longitude;
+        this.zoom = 12;
+      });
+    }
   }
- 
+
+   addLocation( event : any ){
+    let newStop ={
+      lat : event.coords.lat,
+      lng : event.coords.lng
+    }
+    this.locationsInMap.pop()
+    this.locationsInMap.unshift( newStop )
+    this.point = this.locationsInMap[0]; 
+    console.log(this.locationsInMap[0]);
+  }
+  
+lastPositionStop(event){
+  console.log(event)
+  this.latitude = event.coords.lat
+  this.longitude = event.coords.lng
+  }
 }

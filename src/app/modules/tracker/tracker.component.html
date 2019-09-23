@@ -1,0 +1,57 @@
+<div class="container">
+    <div class="row modal-dialog-centered">
+      <div class="col-4">
+        <div class="card ">
+          <div class="card-body">
+              <h5 class="card-title">D E V I C E S</h5>
+              <div class="accordion" id="accordionExample">
+                  <div class="card">
+                      <div class="card-header" id="headingOne">
+                          <h2 class="mb-0">
+                              <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne"
+                                  aria-expanded="true" aria-controls="collapseOne">
+                                  <i class="fas fa-mobile-alt"></i>ngFor de los dispositivos
+                              </button>
+                          </h2>
+                      </div>
+      
+                      <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
+                          data-parent="#accordionExample">
+                          <div class="card-body">
+                              <div class="container">
+                                  <div class="row">
+                                      <div class="col-lg">
+                                              ngFor de la ruta
+                                      </div>
+                                      <div class="col'sm">
+                                          <button type="button" class="btn btn-success btn-sm" (click)="getCords()"><i class="fas fa-bus"></i>Iniciar Recorrido</button>
+                                      </div>
+                                  </div>
+                              </div>
+      
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      </div>
+      <div class="col-8">
+        <div class="card shadow p-3 mb-5 bg-white rounded ">
+          <div class="card-body">
+            <agm-map [latitude]="data[0].lat" [longitude]="data[0].lng" [zoom]="16">
+              <div class='agm-info-window-content'>
+                <ng-content>
+  
+                </ng-content>
+              </div>
+              <agm-direction [origin]="origin" [destination]="destination" [waypoints]="waypoints"></agm-direction>
+            </agm-map>
+            <!-- <agm-map [latitude]="data[0].lat" [longitude]="data[0].lng" [zoom]="16">
+              <agm-marker *ngFor="let p of positions"  [latitude]="p.lat" [longitude]="p.lng"></agm-marker>
+            </agm-map> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
